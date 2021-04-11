@@ -7,7 +7,7 @@ services:
             dockerfile: Dockerfile
         volumes:
             - ./web:/usr/src/app
-        command: sh -c "cd workplace && yarn start"
+        command: sh -c "cd /usr/src/app && yarn start"
         ports:
             - 3000:3000
         tty: true
@@ -24,25 +24,22 @@ services:
             - ./app/src:/src
         ports:
             - 3001:3000
-        working_dir: "/src"
+        working_dir: /src
         depends_on:
             - db
         networks:
             - backend
+        command: npm start
     db:
         image: mysql:5.7
         container_name: mysql
         env_file: ./db/mysql.env
-        environment:
-            - TZ=Asia/Tokyo
         volumes:
             - account-book-db:/var/lib/mysql:delegated
-            - ./db:/docker-entrypoint-initdb.d
+            # - ./db/initdb.d:/docker-entrypoint-initdb.d
             - ./db/conf:/etc/mysql/conf.d/:ro
         ports:
             - 3306:3306
-        environment:
-            MYSQL_DATABASE: account_book
         networks:
             - backend
 
