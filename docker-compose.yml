@@ -6,8 +6,8 @@ services:
             context: ./web
             dockerfile: Dockerfile
         volumes:
-            - ./web:/usr/src/app
-        command: sh -c "cd /usr/src/app && yarn start"
+            - ./web/src:/usr/src/app
+        command: sh -c "cd account-book && yarn start"
         ports:
             - 3000:3000
         tty: true
@@ -29,7 +29,7 @@ services:
             - db
         networks:
             - backend
-        command: npm run dev
+        command: /bin/sh ./entrypoint.sh
     db:
         image: mysql:5.7
         container_name: mysql
