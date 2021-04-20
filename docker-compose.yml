@@ -29,7 +29,7 @@ services:
             - db
         networks:
             - backend
-        command: /bin/sh ./entrypoint.sh
+        command: npm run dev
     db:
         image: mysql:5.7
         container_name: mysql
