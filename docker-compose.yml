@@ -1,27 +1,28 @@
 version: '3'
 services:
     web:
-        container_name: react
+        container_name: omoti-web
         build:
             context: ./web
             dockerfile: Dockerfile
         volumes:
-            - ./web/src:/usr/src/app
-        command: sh -c "cd account-book && yarn start"
+            - ./web/src:/usr/src/app/
+        working_dir: /usr/src/app/account-book
+        command: sh -c "yarn start"
         ports:
             - 3000:3000
         tty: true
         networks:
             - backend
-    app:
-        container_name: nodejs
+    api:
+        container_name: omoti-api
         build:
-            context: ./app
+            context: ./api
             dockerfile: Dockerfile
-        env_file: ./app/app.env
+        env_file: ./api/app.env
         tty: true
         volumes:
-            - ./app/src:/src
+            - ./api/src:/src
         ports:
             - 3001:3000
         working_dir: /src
@@ -32,11 +33,10 @@ services:
         command: npm run dev
     db:
         image: mysql:5.7
-        container_name: mysql
+        container_name: omoti-db
         env_file: ./db/mysql.env
         volumes:
             - account-book-db:/var/lib/mysql:delegated
-            # - ./db/initdb.d:/docker-entrypoint-initdb.d
             - ./db/conf:/etc/mysql/conf.d/:ro
         ports:
             - 3306:3306

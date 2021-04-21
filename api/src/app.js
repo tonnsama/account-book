@@ -10,7 +10,7 @@ app.get('/', function(req, res) {
   res.send('Hello World!');
 });
 
-var db = require('./models/');
+var db = require('./models');
 app.get('/api/v1/incomes', function(req, res){
   db.Income.findAll().then(incomes => {
     if (!incomes) {
